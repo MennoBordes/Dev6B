@@ -22,26 +22,42 @@ namespace map_reduce
           new Employee(3433,"Michelle","Brown",'F',3250.25),
           new Employee(3540,"Daniel","Smith",'M',2500.50),
       });
-      IEnumerable<Employee> raised = map_reduce.Map(employeeTable, employee =>
-      {
-        return
-            new Employee(
-                employee.Id,
-                employee.Name,
-                employee.Surname,
-                employee.Sex,
-                employee.Salary + employee.Salary * 0.1);
-      });
-      IEnumerable<String> converted = map_reduce.Map(numbers, x => x.ToString());
-      foreach (var item in converted)
-      {
-          Console.WriteLine(item);
-      }
-      IEnumerable<String> converted2 = map_reduce.Map(employeeTable, x => x.ToString());
-      foreach (var item in converted2)
-      {
-          Console.WriteLine(item);
-      }
+      //   IEnumerable<Employee> raised = map_reduce.Map(employeeTable,
+      //     employee =>
+      //     {
+      //       return
+      //           new Employee(
+      //               employee.Id,
+      //               employee.Name,
+      //               employee.Surname,
+      //               employee.Sex,
+      //               employee.Salary + employee.Salary * 0.1);
+      //     });
+      //   IEnumerable<String> converted = map_reduce.Map(numbers, x => x.ToString());
+      //   foreach (var item in converted)
+      //   {
+      //     Console.WriteLine(item);
+      //   }
+      //   var data = map_reduce.Map(employeeTable,
+      //     employee =>
+      //     {
+      //       return new
+      //       {
+      //         Name = employee.Name,
+      //         Surname = employee.Surname
+      //       };
+      //     });
+      var filtered = map_reduce.Where(employeeTable, e => e.Salary > 1500);
+      var data = map_reduce.Map(filtered,
+        employee =>
+        {
+          return new
+          {
+            Name = employee.Name,
+            Surname = employee.Surname
+          };
+        });
+
     }
   }
 }
