@@ -22,10 +22,20 @@ namespace map_reduce
       List<T> result = new List<T>();
       for (int i = 0; i < collection.Count(); i++)
       {
-        if(condition(collection.ElementAt(i)))
+        if (condition(collection.ElementAt(i)))
         {
           result.Add(collection.ElementAt(i));
         }
+      }
+      return result;
+    }
+
+    public static T2 Reduce<T1, T2>(IEnumerable<T1> collection, T2 init, Func<T2, T1, T2> operation)
+    {
+      T2 result = init;
+      for (int i = 0; i < collection.Count(); i++)
+      {
+        result = operation(result, collection.ElementAt(i));
       }
       return result;
     }
