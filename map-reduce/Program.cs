@@ -47,17 +47,72 @@ namespace map_reduce
       //         Surname = employee.Surname
       //       };
       //     });
-      var filtered = map_reduce.Where(employeeTable, e => e.Salary > 1500);
-      var data = map_reduce.Map(filtered,
-        employee =>
-        {
-          return new
-          {
-            Name = employee.Name,
-            Surname = employee.Surname
-          };
-        });
+      //   var filtered = map_reduce.Where(employeeTable, e => e.Salary > 1500);
+      //   var data = map_reduce.Map(filtered,
+      //     employee =>
+      //     {
+      //       return new
+      //       {
+      //         Name = employee.Name,
+      //         Surname = employee.Surname
+      //       };
+      //     });
+      //   string concatenation = map_reduce.Reduce(numbers, "", (accumulator, x) => accumulator + x.ToString());
+      //   double salarySum = map_reduce.Reduce(employeeTable, 0.0, (accumulator, e) => accumulator + e.Salary);
+      //   var filtered = map_reduce.Where(employeeTable, e => e.Salary > 2500.5);
+      //   var salarySum = map_reduce.Reduce(filtered, 0.0, (accumulator, e) => accumulator + e.Salary);
+      //   IEnumerable<Employee> filteredWithReduce =
+      //     map_reduce.Reduce(
+      //         employeeTable,
+      //         new List<Employee>(),
+      //         (queryResult, e) =>
+      //         {
+      //           if (e.Salary > 2500.5)
+      //           {
+      //             queryResult.Add(e);
+      //           }
+      //           return queryResult;
+      //         }
+      //     );
+      //   var data = map_reduce.Map(filteredWithReduce,
+      //     employee =>
+      //     {
+      //         return new
+      //         {
+      //             Name = employee.Name,
+      //             Surname = employee.Surname
+      //         };
+      //     });
+      var dataWithReduce =
+        map_reduce.Reduce(employeeTable,
+        new List<dynamic>(),
+        (queryResult, e) =>
+            {
+              queryResult.Add(
+                  new
+                  {
+                    Name = e.Name,
+                    Surname = e.Surname
+                  });
+              return queryResult;
+            });
 
+      var filerAndProjectionWithReduce =
+        map_reduce.Reduce(employeeTable,
+        new List<dynamic>(),
+        (queryResult, e) =>
+        {
+          if (e.Salary > 2500.5)
+          {
+            queryResult.Add(
+                new
+                {
+                  Name = e.Name,
+                  Surname = e.Surname
+                });
+          }
+          return queryResult;
+        });
     }
   }
 }
